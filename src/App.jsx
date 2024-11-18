@@ -1,31 +1,49 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import NavBar from "./compoments/navbar/NavBar";
+import NotFound from "./pages/notfound/NotFound";
+import AboutUs from "./compoments/about/AboutUs";
+import Contact from "./compoments/contact/Contact";
+import Footer from "./compoments/footer/Footer";
+import Home from "./pages/home/Home";
+import BookPage from "./pages/books/BookPage";
+import Services from "./compoments/services/Services";
+import ScrollToTop from "./compoments/scrollToTop";
+import DetailPage from "./pages/detailPage/DetailPage";
+import MobileMenu from "./compoments/mubileMenu/MobileMenu";
 
 function App() {
-  const [count, setCount] = useState(0);
-
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const MenuSignToggle = () => {
+    setShowMobileMenu(!showMobileMenu);
+  };
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>DrDiri'sBookStore</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>Stay cunnect for more actions</p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BrowserRouter>
+        <ScrollToTop />
+        <NavBar
+          showMobileMenu={showMobileMenu}
+          setShowMobileMenu={setShowMobileMenu}
+          MenuSignToggle={MenuSignToggle}
+        />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/bookPage" element={<BookPage />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/detailPage/:id" element={<DetailPage />} />
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        {showMobileMenu && (
+          <MobileMenu
+            showMobileMenu={showMobileMenu}
+            setShowMobileMenu={setShowMobileMenu}
+          />
+        )}
+        <Footer />
+      </BrowserRouter>
     </>
   );
 }
